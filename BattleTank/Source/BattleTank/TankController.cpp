@@ -6,6 +6,19 @@
 
 void ATankController::BeginPlay(){
     Super::BeginPlay();
+    
+    
+    auto ControlledTank = GetControlledTank();
+    if(!ControlledTank) {
+        UE_LOG(LogTemp, Warning, TEXT("TankController not possessed."));
+    
+    }
+    else {
+        UE_LOG(LogTemp, Warning, TEXT("TankController possessed by: %s"), *(ControlledTank->GetName()));
+    }
+    
+    
+    
 }
 
 ATank* ATankController::GetControlledTank() const{
