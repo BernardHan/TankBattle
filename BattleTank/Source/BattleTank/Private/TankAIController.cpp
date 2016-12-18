@@ -9,8 +9,8 @@ void ATankAIController::BeginPlay(){
     Super::BeginPlay();
     
     
-    auto ControlledTank = GetControlledTank();
-    auto PlayerTank = GetPlayerTank();
+    ControlledTank = GetControlledTank();
+    PlayerTank = GetPlayerTank();
     if(!PlayerTank) {
         UE_LOG(LogTemp, Warning, TEXT("No Target."));
         
@@ -18,9 +18,20 @@ void ATankAIController::BeginPlay(){
     else {
         UE_LOG(LogTemp, Warning, TEXT("Targeting: %s"), *(PlayerTank->GetName()));
     }
+}
+
+void ATankAIController::Tick(float DeltaSeconds){
+    Super::Tick(DeltaSeconds);
     
-    
-    
+    if(PlayerTank){
+        //Move toward the player
+        
+        //Aim at the player
+        ControlledTank->AimAt(PlayerTank->GetActorLocation());
+        
+        // fire
+        
+    }
 }
 
 ATank* ATankAIController::GetControlledTank() const{
