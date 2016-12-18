@@ -34,6 +34,39 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 	// ...
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation){
-    UE_LOG(LogTemp,Warning, TEXT("%s aiming at %s"), *GetOwner()->GetName(), *HitLocation.ToString());
+void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
+    if(!Barrel){return;}
+    auto BarrelLoc = Barrel->GetComponentLocation();
+    //UE_LOG(LogTemp,Warning, TEXT("%s aiming at %s from %s"), *GetOwner()->GetName(), *HitLocation.ToString(), *BarrelLoc.ToString());
+    
+    // using suggest projectile velocity
+    FVector OutVelocity; // the out param
+    FVector Start = Barrel->GetSocketLocation(FName("FireOut"));
+    
+    bool Suggest = UGameplayStatics::SuggestProjectileVelocity(this, OutVelocity, Start, HitLocation, LaunchSpeed);
+    
+    
+    if(Suggest){
+        // turn the velocity to normalized direction
+        auto AimDirection = OutVelocity.GetSafeNormal();
+        UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
+        MoveBarrel(AimDirection);
+    }
+}
+
+void UTankAimingComponent::SetBarrel(UStaticMeshComponent* BarrelToSet){
+    Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::MoveBarrel(FVector AimDirection){
+    // calculate the difference rotation between current and aim
+    //FRotator BarrelRot = Barrel->GetComponentRotation();
+    FRotator BarrelRot = Barrel->GetForwardVector().Rotation();
+    FRotator AimRot = AimDirection.Rotation();
+    FRotator Delta = AimRot - BarrelRot;
+    
+    // move the barrel according to frame rate
+    
+    
+    
 }

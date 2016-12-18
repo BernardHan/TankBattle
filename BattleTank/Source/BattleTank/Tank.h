@@ -13,7 +13,9 @@ class BATTLETANK_API ATank : public APawn
 
 public:
     void AimAt(FVector HitLocation);
-    
+    UFUNCTION(BlueprintCallable, Category = Setup)
+    void SetBarrel(UStaticMeshComponent* BarrelToSet);
+
 private:
 	// Sets default values for this pawn's properties
 	ATank();
@@ -26,6 +28,10 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+    
+    // the projectile launch speed
+    UPROPERTY(EditAnywhere, Category = Firing)
+    float LaunchSpeed = 100000;
 
 protected:
     UTankAimingComponent* TankAimingComponent = nullptr;
