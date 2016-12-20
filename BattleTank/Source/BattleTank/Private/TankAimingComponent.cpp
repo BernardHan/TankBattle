@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "TankAimingComponent.h"
 
 
@@ -54,7 +55,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
     }
 }
 
-void UTankAimingComponent::SetBarrel(UStaticMeshComponent* BarrelToSet){
+void UTankAimingComponent::SetBarrel(UTankBarrel* BarrelToSet){
     Barrel = BarrelToSet;
 }
 
@@ -66,7 +67,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection){
     FRotator Delta = AimRot - BarrelRot;
     
     // move the barrel according to frame rate
-    
+    Barrel->Elevate(Delta.Pitch);
     
     
 }
