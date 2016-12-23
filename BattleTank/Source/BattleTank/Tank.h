@@ -7,6 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankBarrel;
+class UTankTurret;
 class UTankAimingComponent;
 
 UCLASS()
@@ -18,6 +19,11 @@ public:
     void AimAt(FVector HitLocation);
     UFUNCTION(BlueprintCallable, Category = Setup)
     void SetBarrel(UTankBarrel* BarrelToSet);
+    UFUNCTION(BlueprintCallable, Category = Setup)
+    void SetTurret(UTankTurret* TurretToSet);
+    
+    UFUNCTION(BlueprintCallable, Category = Setup)
+    void Fire();
 
 private:
 	// Sets default values for this pawn's properties

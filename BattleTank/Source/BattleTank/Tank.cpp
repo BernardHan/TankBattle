@@ -27,6 +27,8 @@ void ATank::BeginPlay()
 void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
+    
+    InputComponent->BindAction("Fire", IE_Pressed, this, &ATank::Fire);
 
 }
 
@@ -36,4 +38,12 @@ void ATank::AimAt(FVector HitLocation){
 
 void ATank::SetBarrel(UTankBarrel* BarrelToSet){
     TankAimingComponent->SetBarrel(BarrelToSet);
+}
+
+void ATank::SetTurret(UTankTurret* TurretToSet){
+    TankAimingComponent->SetTurret(TurretToSet);
+}
+
+void ATank::Fire(){
+    UE_LOG(LogTemp, Warning, TEXT("fire!!"));
 }
