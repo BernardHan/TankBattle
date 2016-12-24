@@ -9,6 +9,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -38,7 +39,16 @@ private:
     
     // the projectile launch speed
     UPROPERTY(EditAnywhere, Category = Firing)
-    float LaunchSpeed = 100000;
+    float LaunchSpeed = 7000;
+    
+    UPROPERTY(EditAnywhere, Category = Setup)
+    TSubclassOf<AProjectile> ProjectileBP;
+    
+    // keep a local referece of barrel so that we can spawn projectile
+    UTankBarrel* Barrel = nullptr;
+    
+    float ReloadTime = 3.f; // 3 secs
+    double LastFireTime = 0; // the time when it fires last time
 
 protected:
     UTankAimingComponent* TankAimingComponent = nullptr;

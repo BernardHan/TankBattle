@@ -51,9 +51,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
     if(Suggest){
         // turn the velocity to normalized direction
         auto AimDirection = OutVelocity.GetSafeNormal();
-        UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
+        //UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
         
-        MoveBarrel(AimDirection);
+        MoveBarrel(AimDirection); //this move barrel pitch, and turret yaw, which move barrel also
+    }
+    else{
+        UE_LOG(LogTemp, Warning, TEXT("No suggested speed for %s"), *GetName());
     }
 }
 
