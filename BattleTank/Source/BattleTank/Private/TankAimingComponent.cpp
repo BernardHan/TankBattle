@@ -56,7 +56,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
         MoveBarrel(AimDirection); //this move barrel pitch, and turret yaw, which move barrel also
     }
     else{
-        UE_LOG(LogTemp, Warning, TEXT("No suggested speed for %s"), *GetName());
+        //UE_LOG(LogTemp, Warning, TEXT("No suggested speed for %s"), *GetName());
     }
 }
 
