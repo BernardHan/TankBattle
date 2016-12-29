@@ -25,5 +25,7 @@ private:
     ATank* ControlledTank = nullptr;
     ATank* PlayerTank = nullptr;
     
+    float Radius = 3000; // the ai tanks stop at 30 meters away from player
+    
     
 };

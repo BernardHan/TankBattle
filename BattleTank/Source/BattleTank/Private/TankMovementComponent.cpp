@@ -2,10 +2,39 @@
 
 #include "BattleTank.h"
 #include "TankMovementComponent.h"
+#include "TankTrack.h"
 
 
-
+void UTankMovementComponent::SetTracks(UTankTrack* LeftToSet, UTankTrack* RightToSet){
+    if(!LeftToSet || !RightToSet){ return;}
+    
+    LeftTrack = LeftToSet;
+    RightTrack = RightToSet;
+}
 
 void UTankMovementComponent::IntendMoveForward(float Throw){
-    
+    if(!LeftTrack || !RightTrack){ return;}
+    LeftTrack->SetThrottle(Throw);
+    RightTrack->SetThrottle(Throw);
 }
+
+//This turn the tank
+void UTankMovementComponent::IntendTurn(float Throw){
+    if(!LeftTrack || !RightTrack){ return;}
+    RightTrack->SetThrottle(Throw);
+    LeftTrack->SetThrottle(-Throw);
+}
+
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed){
+    // no super because we completely override it
+    // this method will be called by the MoveToActor() from AI controller
+    //auto Name = GetOwner()->GetName();
+    auto Velocity = MoveVelocity.GetSafeNormal();
+    //UE_LOG(LogTemp, Warning, TEXT("%s: %s"), *Name, *Velocity);
+    auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+    auto ForwardThrow = FVector::DotProduct(TankForward, Velocity);
+    
+    IntendMoveForward(ForwardThrow);
+}
+

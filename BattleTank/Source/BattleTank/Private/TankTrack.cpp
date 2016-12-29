@@ -5,11 +5,8 @@
 
 
 
-
+// this make one of the track move
 void UTankTrack::SetThrottle(float Throttle){
-    auto Name = GetName();
-    UE_LOG(LogTemp, Warning, TEXT("%s throttle %f"), *Name, Throttle);
-    
     // Apply force
     auto Force = GetForwardVector() * Throttle * MaxDrivingForce;
     auto ForceLocation = GetComponentLocation();
