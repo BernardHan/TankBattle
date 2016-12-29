@@ -29,12 +29,13 @@ void UTankMovementComponent::IntendTurn(float Throw){
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed){
     // no super because we completely override it
     // this method will be called by the MoveToActor() from AI controller
-    //auto Name = GetOwner()->GetName();
     auto Velocity = MoveVelocity.GetSafeNormal();
-    //UE_LOG(LogTemp, Warning, TEXT("%s: %s"), *Name, *Velocity);
     auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
-    auto ForwardThrow = FVector::DotProduct(TankForward, Velocity);
+    
+    auto ForwardThrow = FVector::DotProduct(TankForward, Velocity); // for going forward and backward
+    auto TurnThrow = FVector::CrossProduct(TankForward, Velocity).Z; // this is fvector, so take out the z
     
     IntendMoveForward(ForwardThrow);
+    IntendTurn(TurnThrow);
 }
 

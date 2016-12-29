@@ -53,6 +53,7 @@ private:
     double LastFireTime = 0; // the time when it fires last time
 
 protected:
+    UPROPERTY(BlueprintReadOnly)
     UTankAimingComponent* TankAimingComponent = nullptr;
     UPROPERTY(BlueprintReadOnly)
     UTankMovementComponent* TankMovementComponent = nullptr;

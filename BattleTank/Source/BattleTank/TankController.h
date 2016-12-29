@@ -19,6 +19,8 @@ class BATTLETANK_API ATankController : public APlayerController
 public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
+protected:
+    UFUNCTION(BlueprintCallable, Category=Setup)
     ATank* GetControlledTank() const;
     void Aim(); // move the tank barrel so that the shot hits where the white point pointing to
 private:
