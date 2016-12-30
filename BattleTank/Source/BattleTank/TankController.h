@@ -8,7 +8,6 @@
 
 
 class UTankAimingComponent;
-class ATank;
 /**
  * 
  */
@@ -26,8 +25,6 @@ protected:
     UFUNCTION(BlueprintImplementableEvent, Category = Setup)
     void FindAimingComponent(UTankAimingComponent* Referece);
     
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    ATank* GetControlledTank() const;
 private:
     //return the hit location if there's a hit
     bool RayHit(FVector& HitLocation) const; //const because it only return a vector and bool, no change to the tank

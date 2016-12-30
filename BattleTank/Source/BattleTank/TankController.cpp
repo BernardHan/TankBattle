@@ -4,13 +4,7 @@
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
 #include "TankController.h"
-#include "Tank.h"
 
-
-ATank* ATankController::GetControlledTank() const
-{
-    return Cast<ATank>(GetPawn());
-}
 
 void ATankController::BeginPlay(){
     Super::BeginPlay();
@@ -42,15 +36,16 @@ void ATankController::Tick(float DeltaSeconds){
 }
 
 void ATankController::Aim(){
+    auto ControlledTank = GetPawn();
+    if(!ensure(ControlledTank)){return;}
+    auto TankAimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 
-    auto TankAimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-
-    //if(!ensure(TankAimingComponent)){return;}
+    if(!ensure(TankAimingComponent)){return;}
     
     FVector HitLocation; // this is out parameter
     if(RayHit(HitLocation)){
         // call the AimAt method in Tank.cpp
-        //TankAimingComponent->AimAt(HitLocation);
+        TankAimingComponent->AimAt(HitLocation);
     }
 
     
