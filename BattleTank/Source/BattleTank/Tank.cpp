@@ -4,8 +4,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
-#include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 
 
 // Sets default values
@@ -15,16 +13,11 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
     
     // no need to protect pointer, if it fail, the constructor fails
-    TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
-    //TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 
 }
 
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-	
+void ATank::BeginPlay(){
+    Super::BeginPlay();
 }
 
 // Called to bind functionality to input
@@ -36,25 +29,12 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 }
 
-void ATank::AimAt(FVector HitLocation){
-    TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
-void ATank::SetBarrel(UTankBarrel* BarrelToSet){
-    TankAimingComponent->SetBarrel(BarrelToSet);
-    Barrel = BarrelToSet;
-}
-
-void ATank::SetTurret(UTankTurret* TurretToSet){
-    TankAimingComponent->SetTurret(TurretToSet);
-}
-
 void ATank::Fire(){
     
     // detect if reload ready
     bool ReloadReady = (FPlatformTime::Seconds() - LastFireTime) >= ReloadTime;
     
-    if(!Barrel || !ReloadReady) {return;}
+    if(!ensure(Barrel) || !ReloadReady) {return;}
     
     
     

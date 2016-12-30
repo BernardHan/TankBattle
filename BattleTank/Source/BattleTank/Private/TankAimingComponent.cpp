@@ -27,6 +27,11 @@ void UTankAimingComponent::BeginPlay()
 	
 }
 
+void UTankAimingComponent::SetAiming(UTankBarrel *BarrelToSet, UTankTurret *TurretToSet){
+    Barrel = BarrelToSet;
+    Turret = TurretToSet;
+}
+
 
 // Called every frame
 void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
@@ -36,8 +41,8 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 	// ...
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
-    if(!Barrel){return;}
+void UTankAimingComponent::AimAt(FVector HitLocation){
+    if(!ensure(Barrel)){return;}
     auto BarrelLoc = Barrel->GetComponentLocation();
     //UE_LOG(LogTemp,Warning, TEXT("%s aiming at %s from %s"), *GetOwner()->GetName(), *HitLocation.ToString(), *BarrelLoc.ToString());
     
@@ -45,7 +50,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
     FVector OutVelocity; // the out param
     FVector Start = Barrel->GetSocketLocation(FName("FireOut"));
     
-    bool Suggest = UGameplayStatics::SuggestProjectileVelocity(this, OutVelocity, Start, HitLocation, LaunchSpeed);
+    bool Suggest = UGameplayStatics::SuggestProjectileVelocity(this, OutVelocity, Start, HitLocation, LaunchSpeed, false, 0.f, 0.f, ESuggestProjVelocityTraceOption::DoNotTrace);
     
     
     if(Suggest){
@@ -60,11 +65,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed){
     }
 }
 
-void UTankAimingComponent::SetBarrel(UTankBarrel* BarrelToSet){
-    Barrel = BarrelToSet;
-}
-
 void UTankAimingComponent::MoveBarrel(FVector AimDirection){
+    if(!ensure(Barrel && Turret)) { return; }
     // calculate the difference rotation between current and aim
     //FRotator BarrelRot = Barrel->GetComponentRotation();
     FRotator BarrelRot = Barrel->GetForwardVector().Rotation();
@@ -78,6 +80,3 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection){
     
 }
 
-void UTankAimingComponent::SetTurret(UTankTurret* TurretToSet){
-    Turret = TurretToSet;
-}

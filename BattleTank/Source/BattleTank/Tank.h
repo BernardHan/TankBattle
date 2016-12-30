@@ -7,11 +7,7 @@
 #include "Tank.generated.h"
 
 class UTankBarrel;
-class UTankTurret;
-class UTankAimingComponent;
 class AProjectile;
-class UTankTrack;
-class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -19,25 +15,19 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-    void AimAt(FVector HitLocation);
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetBarrel(UTankBarrel* BarrelToSet);
-    UFUNCTION(BlueprintCallable, Category = Setup)
-    void SetTurret(UTankTurret* TurretToSet);
-    
     UFUNCTION(BlueprintCallable, Category = Setup)
     void Fire();
+    
 
 private:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+    
+    virtual void BeginPlay() override;
     
     // the projectile launch speed
     UPROPERTY(EditAnywhere, Category = Firing)
@@ -51,11 +41,5 @@ private:
     
     float ReloadTime = 3.f; // 3 secs
     double LastFireTime = 0; // the time when it fires last time
-
-protected:
-    UPROPERTY(BlueprintReadOnly)
-    UTankAimingComponent* TankAimingComponent = nullptr;
-    UPROPERTY(BlueprintReadOnly)
-    UTankMovementComponent* TankMovementComponent = nullptr;
 	
 };

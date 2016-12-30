@@ -2,16 +2,22 @@
 
 
 #include "BattleTank.h"
+#include "TankAimingComponent.h"
 #include "TankController.h"
 #include "Tank.h"
 
+
+ATank* ATankController::GetControlledTank() const
+{
+    return Cast<ATank>(GetPawn());
+}
 
 void ATankController::BeginPlay(){
     Super::BeginPlay();
     
     
-    ControlledTank = GetControlledTank();
-    if(!ControlledTank) {
+    auto ControlledTank = GetPawn();
+    if(!ensure(ControlledTank)) {
         UE_LOG(LogTemp, Warning, TEXT("TankController not possessed."));
     
     }
@@ -19,13 +25,15 @@ void ATankController::BeginPlay(){
         UE_LOG(LogTemp, Warning, TEXT("TankController possessed by: %s"), *(ControlledTank->GetName()));
     }
     
+    //broadcast the find aiming component method to blueprint
+    auto TankAimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+    if(ensure(TankAimingComponent)){
+        FindAimingComponent(TankAimingComponent);
+    }
+    else{
+        UE_LOG(LogTemp, Warning, TEXT("Player Controller: No Aiming Component Found."));
+    }
     
-    
-}
-
-ATank* ATankController::GetControlledTank() const{
-    
-    return Cast<ATank>(GetPawn()); // get pawn give you the tank pawn under controlled, cast it from APawn* to ATank*
 }
 
 void ATankController::Tick(float DeltaSeconds){
@@ -34,12 +42,15 @@ void ATankController::Tick(float DeltaSeconds){
 }
 
 void ATankController::Aim(){
-    if(!ControlledTank){return;}
+
+    auto TankAimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
+    //if(!ensure(TankAimingComponent)){return;}
     
     FVector HitLocation; // this is out parameter
     if(RayHit(HitLocation)){
         // call the AimAt method in Tank.cpp
-        ControlledTank->AimAt(HitLocation);
+        //TankAimingComponent->AimAt(HitLocation);
     }
 
     

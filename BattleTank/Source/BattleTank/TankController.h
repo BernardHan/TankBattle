@@ -7,6 +7,7 @@
 #include "TankController.generated.h" // must be the last to include
 
 
+class UTankAimingComponent;
 class ATank;
 /**
  * 
@@ -20,12 +21,14 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaSeconds) override;
 protected:
-    UFUNCTION(BlueprintCallable, Category=Setup)
-    ATank* GetControlledTank() const;
     void Aim(); // move the tank barrel so that the shot hits where the white point pointing to
-private:
-    ATank* ControlledTank;
     
+    UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+    void FindAimingComponent(UTankAimingComponent* Referece);
+    
+    UFUNCTION(BlueprintCallable, Category = Setup)
+    ATank* GetControlledTank() const;
+private:
     //return the hit location if there's a hit
     bool RayHit(FVector& HitLocation) const; //const because it only return a vector and bool, no change to the tank
     
