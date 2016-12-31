@@ -29,13 +29,13 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+    // Called every frame
+    virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
     void AimAt(FVector HitLocation);
     
     
-    void MoveBarrel(FVector AimDirection);
+    void MoveBarrel();
 
     
     UFUNCTION(BlueprintCallable, Category = Setup)
@@ -61,6 +61,10 @@ private:
 
     float ReloadTime = 3.f; // 3 secs
     double LastFireTime = 0; // the time when it fires last time
+    
+    bool IsBarrelMoving();
+    
+    FVector AimDirection;
 
 protected:
     UPROPERTY(BlueprintReadOnly, Category = State)
