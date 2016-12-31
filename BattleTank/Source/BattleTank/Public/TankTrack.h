@@ -21,8 +21,21 @@ public:
     float MaxDrivingForce = 40000000; //assume 40000kg, 10 acceleration
     
     // Called every frame
-    virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+    //virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 	
+    virtual void BeginPlay() override;
+    
 private:
     UTankTrack();
+    
+    UFUNCTION()
+    void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+               UPrimitiveComponent* OtherComponent, FVector NormalImpulse,
+               const FHitResult& Hit);
+    
+    void CancelSideWay();
+    
+    void DriveTrack();
+    
+    float CurrentThrottle = 0; // cache throttke
 };
