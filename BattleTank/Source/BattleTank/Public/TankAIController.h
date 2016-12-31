@@ -19,7 +19,9 @@ public:
 private:
     virtual void BeginPlay() override;
     
-    float Radius = 30; // the ai tanks stop at 30 meters away from player
+protected:
+    UPROPERTY(EditAnywhere, Category=Setup)
+    float Radius = 8000; // the ai tanks stop at 80 meters away from player
     
     
 };

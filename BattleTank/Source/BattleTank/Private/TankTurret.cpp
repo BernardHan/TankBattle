@@ -6,7 +6,7 @@
 
 
 void UTankTurret::TurretRotator(float Degree){
-    Degree = FMath::Clamp(Degree, -1.f, 1.f);
+    Degree = FMath::Clamp<float>(Degree, -1.f, 1.f);
     auto change = Degree * MaxDegPerSec * GetWorld()->GetDeltaSeconds();
     auto newRot = RelativeRotation.Yaw + change;
     

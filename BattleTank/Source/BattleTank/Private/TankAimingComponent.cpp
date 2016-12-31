@@ -77,16 +77,23 @@ void UTankAimingComponent::AimAt(FVector HitLocation){
 
 void UTankAimingComponent::MoveBarrel(){
     if(!ensure(Barrel && Turret)) { return; }
+    
     // calculate the difference rotation between current and aim
-    //FRotator BarrelRot = Barrel->GetComponentRotation();
     FRotator BarrelRot = Barrel->GetForwardVector().Rotation();
     FRotator AimRot = AimDirection.Rotation();
     FRotator Delta = AimRot - BarrelRot;
     
     // move the barrel according to frame rate
     Barrel->Elevate(Delta.Pitch);
-    Turret->TurretRotator(Delta.Yaw);
     
+    //Turret->TurretRotator(FMath::Abs(Delta.Yaw)); // abs makes it always the shortest way
+    
+    if(Delta.Yaw < 180){
+        Turret->TurretRotator(Delta.Yaw);
+    }
+    else{
+        Turret->TurretRotator(-Delta.Yaw);
+    }
     
 }
 
@@ -117,3 +124,6 @@ void UTankAimingComponent::Fire(){
     LastFireTime = FPlatformTime::Seconds();
 }
 
+EAimingState UTankAimingComponent::GetAimingState() const{
+    return AimingState;
+}

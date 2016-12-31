@@ -12,7 +12,7 @@ void UTankBarrel::Elevate(float Degree){
     // give a max elevation speed, and frame time
     auto change = Degree * MaxDegPerSec * GetWorld()->GetDeltaSeconds();
     auto newRot = RelativeRotation.Pitch + change;
-    newRot = FMath::Clamp(newRot, MinElevation, MaxElevation);
+    newRot = FMath::Clamp<float>(newRot, MinElevation, MaxElevation);
     
     SetRelativeRotation(FRotator(newRot, 0, 0));
 }
