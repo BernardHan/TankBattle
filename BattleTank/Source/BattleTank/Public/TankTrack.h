@@ -19,5 +19,10 @@ public:
     void SetThrottle(float Throttle);
     UPROPERTY(EditDefaultsOnly)
     float MaxDrivingForce = 40000000; //assume 40000kg, 10 acceleration
+    
+    // Called every frame
+    virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 	
+private:
+    UTankTrack();
 };

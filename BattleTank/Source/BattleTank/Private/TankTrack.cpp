@@ -4,6 +4,24 @@
 #include "TankTrack.h"
 
 
+UTankTrack::UTankTrack(){
+    PrimaryComponentTick.bCanEverTick = true;
+}
+
+
+// Called every frame, this is responsible for cancelling out the side way moving
+void UTankTrack::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ){
+    // calculate the slip speed
+    auto SlipSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+    
+    // calculate the requred acceleration for this frame to correct the side moving
+    auto CorrectionAcceleration = -SlipSpeed / DeltaTime * GetRightVector();
+    
+    // calculate the sideways F= m * a
+    auto TankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
+    auto CorrectionForce = TankRoot->GetMass() * CorrectionAcceleration / 2; // /2 because 2 tracks
+    TankRoot->AddForce(CorrectionForce);
+}
 
 // this make one of the track move
 void UTankTrack::SetThrottle(float Throttle){
