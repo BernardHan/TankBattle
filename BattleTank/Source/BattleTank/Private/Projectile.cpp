@@ -49,4 +49,16 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
     LaunchBlast->Deactivate();
     ImpactBlast->Activate();
     ExplosionForce->FireImpulse();
+    
+    // destroy the projectle on hitting
+    SetRootComponent(ImpactBlast); // keep the particle
+    CollisionMesh->DestroyComponent();
+    
+    // detructor timer, so that won't be infinite projectiles in world outliner
+    FTimerHandle Timer;
+    GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
+}
+
+void AProjectile::OnTimerExpire(){
+    Destroy();
 }
