@@ -58,19 +58,20 @@ private:
     UTankTurret* Turret = nullptr;
     
     // the projectile launch speed
-    UPROPERTY(EditAnywhere, Category = Firing)
+    UPROPERTY(EditDefaultsOnly, Category = Firing)
     float LaunchSpeed = 7000;
     
-    UPROPERTY(EditAnywhere, Category = Setup)
+    UPROPERTY(EditDefaultsOnly, Category = Setup)
     TSubclassOf<AProjectile> ProjectileBP;
-
+    
+    UPROPERTY(EditDefaultsOnly, Category = Firing)
     float ReloadTime = 3.f; // 3 secs
     double LastFireTime = 0; // the time when it fires last time
     
     bool IsBarrelMoving();
     
     FVector AimDirection;
-    
+    UPROPERTY(EditDefaultsOnly, Category = Firing)
     int AmmoLeft = 3;
 
 protected:
