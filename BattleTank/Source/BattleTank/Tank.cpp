@@ -14,3 +14,19 @@ ATank::ATank()
     // no need to protect pointer, if it fail, the constructor fails
 
 }
+
+float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent,
+                        class AController* EventInstigator, AActor* DamageCauser){
+    int32 Damage = FPlatformMath::RoundToInt(DamageAmount);
+    int32 DamageToApply = FMath::Clamp(Damage, 0, CurrentHealth);
+    
+    CurrentHealth -= DamageToApply;
+    if(CurrentHealth <= 0){
+        UE_LOG(LogTemp, Warning, TEXT("%s Dies"), *GetName());
+    }
+    return DamageToApply;
+}
+
+float ATank::GetHealthPercent() const{
+    return (float)CurrentHealth / (float)InitialHealth;
+}

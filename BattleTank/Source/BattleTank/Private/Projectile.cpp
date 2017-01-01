@@ -54,6 +54,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
     SetRootComponent(ImpactBlast); // keep the particle
     CollisionMesh->DestroyComponent();
     
+    // apply damage
+    UGameplayStatics::ApplyRadialDamage(this,
+                                        BaseDamage,
+                                        GetActorLocation(),
+                                        ExplosionForce->Radius,
+                                        UDamageType::StaticClass(),
+                                        TArray<AActor*>() // damage all actors
+                                        );
+    
     // detructor timer, so that won't be infinite projectiles in world outliner
     FTimerHandle Timer;
     GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
