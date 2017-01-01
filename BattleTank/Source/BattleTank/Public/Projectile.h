@@ -34,6 +34,9 @@ private:
     UPROPERTY(VisibleAnywhere, Category = Component)
     UParticleSystemComponent* ImpactBlast = nullptr;
     
+    UPROPERTY(VisibleAnywhere, Category = Component)
+    URadialForceComponent* ExplosionForce = nullptr;
+    
     UFUNCTION()
     void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                UPrimitiveComponent* OtherComponent, FVector NormalImpulse,
