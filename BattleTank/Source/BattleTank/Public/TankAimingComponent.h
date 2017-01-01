@@ -11,7 +11,8 @@ enum class EAimingState : uint8
 {
     Reloading,
     Aiming,
-    Locked
+    Locked,
+    NoAmmo
 };
 
 
@@ -46,6 +47,8 @@ public:
     
     EAimingState GetAimingState() const;
     
+    UFUNCTION(BlueprintCallable, Category = Setup)
+    int GetAmmoLeft() const;
 	
 private:
     // Sets default values for this component's properties
@@ -67,6 +70,8 @@ private:
     bool IsBarrelMoving();
     
     FVector AimDirection;
+    
+    int AmmoLeft = 3;
 
 protected:
     UPROPERTY(BlueprintReadOnly, Category = State)

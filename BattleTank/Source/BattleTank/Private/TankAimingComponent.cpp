@@ -43,7 +43,10 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 	bool ReloadReady = (FPlatformTime::Seconds() - LastFireTime) >= ReloadTime;
     
-    if(!ReloadReady){
+    if(AmmoLeft <= 0){
+        AimingState = EAimingState::NoAmmo;
+    }
+    else if(!ReloadReady){
         AimingState = EAimingState::Reloading;
     }
     else if(IsBarrelMoving()){
@@ -85,10 +88,8 @@ void UTankAimingComponent::MoveBarrel(){
     
     // move the barrel according to frame rate
     Barrel->Elevate(Delta.Pitch);
-    
-    //Turret->TurretRotator(FMath::Abs(Delta.Yaw)); // abs makes it always the shortest way
-    
-    if(Delta.Yaw < 180){
+
+    if(FMath::Abs(Delta.Yaw) < 180){
         Turret->TurretRotator(Delta.Yaw);
     }
     else{
@@ -108,10 +109,11 @@ void UTankAimingComponent::Fire(){
     // detect if reload ready
     //
     
-    if(AimingState == EAimingState::Reloading) {return;}
+    if(AimingState == EAimingState::Reloading || AimingState == EAimingState::NoAmmo) {return;}
     
     
-    if(!ensure(Barrel && ProjectileBP)) { return;}
+    if(!ensure(Barrel)) { return;}
+    if(!ensure(ProjectileBP)){return;}
     
     // instantiate a projectile at the location of socket "fireon"
     auto Projectile = GetWorld()->SpawnActor<AProjectile>(
@@ -122,8 +124,15 @@ void UTankAimingComponent::Fire(){
     
     Projectile->Launch(LaunchSpeed);
     LastFireTime = FPlatformTime::Seconds();
+    
+    AmmoLeft--;
+
 }
 
 EAimingState UTankAimingComponent::GetAimingState() const{
     return AimingState;
+}
+
+int UTankAimingComponent::GetAmmoLeft() const{
+    return AmmoLeft;
 }
