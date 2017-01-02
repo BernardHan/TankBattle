@@ -4,12 +4,23 @@
 #include "BattleTank.h"
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
-
+#include "Tank.h"
 
 
 
 void ATankAIController::BeginPlay(){
     Super::BeginPlay();
+}
+
+// this method is a safe proof that even if when beginplay tank is not possessed, this method solves the mastter
+void ATankAIController::SetPawn(APawn* InPawn){
+    Super::SetPawn(InPawn);
+    if(!InPawn) {return;}
+    PossessedTank = Cast<ATank>(InPawn);
+    if(!ensure(PossessedTank)){return;}
+    
+    // subscribe local method to the tank death event
+    PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 }
 
 void ATankAIController::Tick(float DeltaSeconds){
@@ -30,4 +41,9 @@ void ATankAIController::Tick(float DeltaSeconds){
             TankAimingComponent->Fire();
         }
     }
+}
+
+void ATankAIController::OnTankDeath(){
+    if(!PossessedTank) { return; }
+    PossessedTank->DetachFromControllerPendingDestroy();
 }

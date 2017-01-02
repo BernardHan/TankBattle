@@ -7,6 +7,8 @@
 #include "Tank.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -15,12 +17,17 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
+    
+    virtual void BeginPlay() override;
+    
     // engine calls this method when actor is damaged
     virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent,
                              class AController* EventInstigator, AActor* DamageCauser) override;
     
     UFUNCTION(BlueprintPure, Category = Health)
     float GetHealthPercent() const; // blueprintpure makes it read only
+    
+    FTankDelegate OnDeath;
     
 private:
     UPROPERTY(EditDefaultsOnly, Category = Setup)

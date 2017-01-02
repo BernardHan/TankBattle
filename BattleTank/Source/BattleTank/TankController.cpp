@@ -4,19 +4,22 @@
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
 #include "TankController.h"
+#include "Tank.h"
 
 
 void ATankController::BeginPlay(){
     Super::BeginPlay();
     
     
-    auto ControlledTank = GetPawn();
+    auto ControlledTank = Cast<ATank>(GetPawn());
     if(!ensure(ControlledTank)) {
         UE_LOG(LogTemp, Warning, TEXT("TankController not possessed."));
     
     }
     else {
         UE_LOG(LogTemp, Warning, TEXT("TankController possessed by: %s"), *(ControlledTank->GetName()));
+        
+        ControlledTank->OnDeath.AddUniqueDynamic(this, &ATankController::OnTankDeath);
     }
     
     //broadcast the find aiming component method to blueprint
@@ -91,4 +94,8 @@ bool ATankController::GetLookVectorHitLocation(FVector LookDirection, FVector& H
         return false;
     }
     
+}
+
+void ATankController::OnTankDeath(){
+    StartSpectatingOnly();
 }

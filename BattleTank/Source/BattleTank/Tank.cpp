@@ -12,7 +12,12 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
     
     // no need to protect pointer, if it fail, the constructor fails
+    
+}
 
+void ATank::BeginPlay(){
+    Super::BeginPlay();
+    CurrentHealth = InitialHealth;
 }
 
 float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent,
@@ -22,7 +27,7 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEv
     
     CurrentHealth -= DamageToApply;
     if(CurrentHealth <= 0){
-        UE_LOG(LogTemp, Warning, TEXT("%s Dies"), *GetName());
+        OnDeath.Broadcast();
     }
     return DamageToApply;
 }

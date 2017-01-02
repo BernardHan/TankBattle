@@ -29,6 +29,10 @@ private:
     //return the hit location if there's a hit
     bool RayHit(FVector& HitLocation) const; //const because it only return a vector and bool, no change to the tank
     
+    // delegate:
+    UFUNCTION()
+    void OnTankDeath();
+    
     UPROPERTY(EditAnywhere)
     float CrosshairXLoc = 0.5;
     UPROPERTY(EditAnywhere)
