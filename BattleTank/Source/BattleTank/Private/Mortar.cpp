@@ -26,7 +26,6 @@ float AMortar::TakeDamage(float DamageAmount, struct FDamageEvent const & Damage
     
     CurrentHealth -= DamageToApply;
     if(CurrentHealth <= 0){
-        UE_LOG(LogTemp, Warning, TEXT("Mortar DIES"));
         Destroy();
     }
     return DamageToApply;

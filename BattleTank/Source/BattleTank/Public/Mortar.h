@@ -27,7 +27,7 @@ public:
     
 private:
     UPROPERTY(EditDefaultsOnly, Category = Setup)
-    int32 InitialHealth = 100;
+    int32 InitialHealth = 40;
     UPROPERTY(VisibleAnywhere, Category = Health)
     int32 CurrentHealth = InitialHealth;
 	
